@@ -6,7 +6,7 @@ Friend Finder implements friend matching based on the user's responses to a ten 
 
 ## Demo
 
-Friend Finder is deployed to Heroku. Please check it out [here](http://google.com).
+Friend Finder is deployed to Heroku. Please check it out [here](https://fierce-taiga-86607.herokuapp.com/).
 
 ## Technologies Used
 
