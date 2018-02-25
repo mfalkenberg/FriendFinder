@@ -2,20 +2,7 @@
 // We are linking our routes to a series of "data" sources.
 // These data sources hold arrays of information on frinds-data.
 
-
-// ===============================================================================
-// ROUTING
-// ===============================================================================
-
-module.exports = function(app) {
-  // API GET Requests
-  // Below code handles when users "visit" a page.
-  // In each of the below cases when a user visits a link
-  // (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table)
-  // ---------------------------------------------------------------------------
-
-  app.get("/api/friends", function(req, res) {
-    res.json([{
+var friends = [{
 	  "name":"Ahmed",
 	  "photo":"https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg",
 	  "scores":[
@@ -37,7 +24,7 @@ module.exports = function(app) {
 	  "scores":[
 	      5,
 	      1,
-	      4,
+	      3,
 	      4,
 	      5,
 	      1,
@@ -56,7 +43,7 @@ module.exports = function(app) {
 	      4,
 	      4,
 	      5,
-	      1,
+	      2,
 	      2,
 	      5,
 	      4,
@@ -70,7 +57,7 @@ module.exports = function(app) {
 	      5,
 	      1,
 	      4,
-	      4,
+	      5,
 	      5,
 	      1,
 	      2,
@@ -81,13 +68,13 @@ module.exports = function(app) {
 	},
 	{
 	  "name":"Ahmed5",
-	  "photo":"https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg",
+	  "photo":"https://www.netonnet.se/GetFile/ProductImagePrimary/ljud-och-bild/tv/46-50tum/skantic-b5010fhd(231364)_1_Normal_Large.jpg",
 	  "scores":[
 	      5,
 	      1,
 	      4,
-	      4,
-	      5,
+	      3,
+	      2,
 	      1,
 	      2,
 	      5,
@@ -95,7 +82,20 @@ module.exports = function(app) {
 	      1
 	    ]
 	},
-	]);
+	];
+// ===============================================================================
+// ROUTING
+// ===============================================================================
+
+module.exports = function(app) {
+  // API GET Requests
+  // Below code handles when users "visit" a page.
+  // In each of the below cases when a user visits a link
+  // (ex: localhost:PORT/api/admin... they are shown a JSON of the data in the table)
+  // ---------------------------------------------------------------------------
+
+  app.get("/api/friends", function(req, res) {
+    res.json(friends);
   });
 
   // API POST Requests
@@ -107,14 +107,26 @@ module.exports = function(app) {
   // ---------------------------------------------------------------------------
 
   app.post("/api/friends", function(req, res) {
-  
-  });
-
-  // ---------------------------------------------------------------------------
-  // I added this below code so you could clear out the table while working with the functionality.
-  // Don"t worry about it!
-
-  app.post("/api/clear", function() {
+  	console.log(req.body['scores[]']);
+  	var scores = req.body['scores[]'];
+  	var currentMin = 1000;
+  	var currentMinIndex = -1; 
+  	for (var i = 0; i < friends.length; i++) {
+  		console.log("***" + i);
+  		var otherScores = friends[i].scores;
+  		console.log(otherScores);
+  		var difference = 0;
+  		for (var j = 0; j < scores.length; j++) {
+  			difference = difference + Math.abs(scores[j] - otherScores[j]);
+  		}
+  		console.log("difference: " + difference);
+  		if (difference < currentMin) {
+  			currentMinIndex = i;
+  			currentMin = difference;
+  			console.log("bfhjs");
+  		}
+  	}
+  	res.json(friends[currentMinIndex]);
 
   });
 };
