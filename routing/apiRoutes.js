@@ -15,26 +15,40 @@ module.exports = function(app) {
   });
 
   // API POST Requests
-  // Below code handles when a user submits a form and thus submits data to the server.
-
+  // Below code handles when a user submits a form 
+  // and thus submits data to the server.
   app.post("/api/friends", function(req, res) {
-  	// var scores take user input scores
+  	// save the user input scores for easier access
+  	// into a local var
   	var scores = req.body['scores[]'];
-  	var currentMin = 1000;
-  	var currentMinIndex = -1; 
+
+  	// create variables to be used in the for loop for comparison 
+  	var currentMin;
+  	var currentMinIndex; 
+  	
+  	// iterate through the array of friends to find the 
+  	// perfect match 
   	for (var i = 0; i < friends.length; i++) {
-  		// otherScores take already in data scores
+  		// save the friend's scores for easier access
+  		// into a variable
   		var otherScores = friends[i].scores;
+
+  		// calculate the difference between the two arrays 
+  		// by comparing each item
   		var difference = 0;
   		for (var j = 0; j < scores.length; j++) {
   			difference = difference + Math.abs(scores[j] - otherScores[j]);
   		}
 
-  		if (difference < currentMin) {
+  		// if it is the first or the new best match
+  		// save it's data
+  		if (i == 0 || difference < currentMin) {
   			currentMinIndex = i;
   			currentMin = difference;
   		}
   	}
+
+  	// write the best match object in the response
   	res.json(friends[currentMinIndex]);
 
   });
